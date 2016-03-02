@@ -12,7 +12,7 @@ const basicPropTypes = {
   bool: true,
   object: {},
   array: [],
-  func: `() => {}`
+  func: () => {}
 };
 const notRequiredProps = Object.keys(parse.props).filter(prop => !prop.required);
 const asserts = notRequiredProps.map(prop => {
@@ -27,16 +27,16 @@ return (`test('not required proptype ${prop} is actually not required', assert =
   assert.end();
 });`);
 });
-const test = `
-require('babel-register')({
+const test = (
+`require('babel-register')({
   presets: [ 'es2015', 'react', 'stage-2' ]
 });
 const test = require('tape');
 const React = require('react');
 const Component = require('../test/index.js');
 
-${asserts.join('\n')}
-`
+${asserts.join('\n\n')}
+`);
 
 console.log(test);
 fs.writeFile(path.join(__dirname, 'gen-test', 'index.js'), test);
