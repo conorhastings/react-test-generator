@@ -5,6 +5,7 @@ require('babel-register')({
 const test = require('tape');
 const React = require('react');
 const ReactDOM = require('react-dom/server');
+const TestUtils = require('react-addons-test-utils');
 const Component = require('../test/index.js').default;
 
 function convertFunctionProp(props) {
@@ -18,6 +19,11 @@ function convertFunctionProp(props) {
     return newProps;
   }, {});
 }
+
+test('is a valid React Component', assert => {
+  assert.ok(TestUtils.isElement(React.createElement(Component, {})), 'is valid');
+  assert.end();
+});
 
 test('not required proptype name is actually not required', assert => {
   let props = {"coolGuy":"() => {}"};
