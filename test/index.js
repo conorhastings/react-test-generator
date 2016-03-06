@@ -11,3 +11,6 @@ Example.propTypes = {
   coolGuy: PropTypes.func
 };
 
+Example.defaultProps = {
+  name: 'Conor'
+}

@@ -19,7 +19,7 @@ test('not required proptype name is actually not required', assert => {
 });
 
 test('not required proptype coolGuy is actually not required', assert => {
-  const props = {"name":"cool"};
+  const props = {"name":"'Conor'"};
   Object.keys(props).forEach(prop => {
     if (props[prop] === '() => {}') {
       props[prop] = () => {};

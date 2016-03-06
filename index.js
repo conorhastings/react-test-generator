@@ -20,7 +20,12 @@ const notRequiredProps = allProps.filter(prop => !prop.required);
 const asserts = notRequiredProps.map(prop => {
   const otherProps = allProps.reduce((props, oProp) => {
     if (oProp !== prop) {
-      props[oProp] = basicPropTypes[componentProps[oProp].type.name];
+      if (componentProps[oProp].defaultValue && !componentProps[oProp].defaultValue.computed) {
+        props[oProp] = componentProps[oProp].defaultValue.value;
+      }
+      else {
+        props[oProp] = basicPropTypes[componentProps[oProp].type.name];
+      }
     }
     return props;
   }, {});
