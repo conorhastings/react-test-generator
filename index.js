@@ -47,6 +47,9 @@ function readDirAndCreateTests(inDir, outDir) {
             }
           });
         }
+        else {
+         readDirAndCreateTests(path.join(inDir, file), path.join(outDir, file));
+        }
       });
     });
   });
