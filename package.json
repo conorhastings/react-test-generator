@@ -7,6 +7,9 @@
     "test": "find ./gen-test -name '*.js' -exec tape {} \\;",
     "build": "./node_modules/.bin/webpack --progress"
   },
+  "bin": {
+    "react-testgen": "index.js"
+  },
   "keywords": [
     "tests",
     "tape",
