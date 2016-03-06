@@ -28,7 +28,7 @@ fs.readdir(path.join(__dirname, program.in), (err, files) => {
             process.exit(1);
           }
           const parse = docGen.parse(data);
-          const test = createTest(parse);
+          const test = createTest(parse, path.join(__dirname, program.in, file));
           fs.writeFile(path.join(__dirname, program.out, file), test);
         });
       }
@@ -36,7 +36,7 @@ fs.readdir(path.join(__dirname, program.in), (err, files) => {
   });
 });
 
-function createTest(component) {
+function createTest(component, pathToComponent) {
   const basicPropTypes = {
     string: "cool",
     number: 2,
@@ -77,7 +77,7 @@ const test = require('tape');
 const React = require('react');
 const ReactDOM = require('react-dom/server');
 const TestUtils = require('react-addons-test-utils');
-const Component = require('../test/index.js').default;
+const Component = require('${pathToComponent}').default;
 
 function convertFunctionProp(props) {
  return Object.keys(props).reduce((newProps, prop, i) => {

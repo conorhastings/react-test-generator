@@ -6,7 +6,7 @@ const test = require('tape');
 const React = require('react');
 const ReactDOM = require('react-dom/server');
 const TestUtils = require('react-addons-test-utils');
-const Component = require('/Users/conor/dev/react-test-generator/test/index.js').default;
+const Component = require('/Users/conor/dev/react-test-generator/test/second.js').default;
 
 function convertFunctionProp(props) {
  return Object.keys(props).reduce((newProps, prop, i) => {
@@ -25,15 +25,15 @@ test('is a valid React Component', assert => {
   assert.end();
 });
 
-test('not required proptype name is actually not required', assert => {
-    let props = {"coolGuy":"() => {}"};
+test('not required proptype something is actually not required', assert => {
+    let props = {"somethingElse":2};
     props = convertFunctionProp(props);
     assert.doesNotThrow(() => ReactDOM.renderToString(React.createElement(Component, props)));
     assert.end();
   });
 
-test('not required proptype coolGuy is actually not required', assert => {
-    let props = {"name":"'Conor'"};
+test('not required proptype somethingElse is actually not required', assert => {
+    let props = {"something":"cool"};
     props = convertFunctionProp(props);
     assert.doesNotThrow(() => ReactDOM.renderToString(React.createElement(Component, props)));
     assert.end();
