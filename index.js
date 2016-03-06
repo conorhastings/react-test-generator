@@ -1,42 +1,73 @@
+#!/usr/bin/env node
+const program = require('commander');
 const docGen = require('react-docgen');
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
 
-const component = fs.readFileSync(path.join(__dirname, 'test', 'index.js'));
+program
+  .version('0.0.0')
+  .option('-i, --in <dir>', 'in directory')
+  .option('-o, --out <dir>', 'out directory')
+  .parse(process.argv);
 
-const parse = docGen.parse(component);
-
-const basicPropTypes = {
-  string: "cool",
-  number: 2,
-  bool: true,
-  object: {},
-  array: [],
-  func: '() => {}'
-};
-
-const componentProps = parse.props;
-const allProps = Object.keys(componentProps);
-const notRequiredProps = allProps.filter(prop => !prop.required);
-const asserts = notRequiredProps.map(prop => {
-  const otherProps = allProps.reduce((props, oProp) => {
-    if (oProp !== prop) {
-      if (componentProps[oProp].defaultValue && !componentProps[oProp].defaultValue.computed) {
-        props[oProp] = componentProps[oProp].defaultValue.value;
+fs.readdir(path.join(__dirname, program.in), (err, files) => {
+  if (err) {
+    console.log(err.stack);
+    process.exit(1);
+  }
+  files.forEach(file => {
+    fs.stat(path.join(__dirname, program.in, file), (err, stat) => {
+      if (err) {
+        console.log(err.stack);
+        process.exit(1);
       }
-      else {
-        props[oProp] = basicPropTypes[componentProps[oProp].type.name];
+      if (stat.isFile()) {
+        fs.readFile(path.join(__dirname, program.in, file), 'utf-8', (err, data) => {
+          if (err) {
+            console.log(err.stack);
+            process.exit(1);
+          }
+          const parse = docGen.parse(data);
+          const test = createTest(parse);
+          fs.writeFile(path.join(__dirname, program.out, file), test);
+        });
       }
-    }
-    return props;
-  }, {});
-return (`test('not required proptype ${prop} is actually not required', assert => {
-  let props = ${JSON.stringify(otherProps)};
-  props = convertFunctionProp(props);
-  assert.doesNotThrow(() => ReactDOM.renderToString(React.createElement(Component, props)));
-  assert.end();
-});`);
+    });
+  });
 });
+
+function createTest(component) {
+  const basicPropTypes = {
+    string: "cool",
+    number: 2,
+    bool: true,
+    object: {},
+    array: [],
+    func: '() => {}'
+  };
+
+  const componentProps = component.props;
+  const allProps = Object.keys(componentProps);
+  const notRequiredProps = allProps.filter(prop => !prop.required);
+  const asserts = notRequiredProps.map(prop => {
+    const otherProps = allProps.reduce((props, oProp) => {
+      if (oProp !== prop) {
+        if (componentProps[oProp].defaultValue && !componentProps[oProp].defaultValue.computed) {
+          props[oProp] = componentProps[oProp].defaultValue.value;
+        }
+        else {
+          props[oProp] = basicPropTypes[componentProps[oProp].type.name];
+        }
+      }
+      return props;
+    }, {});
+  return (`test('not required proptype ${prop} is actually not required', assert => {
+    let props = ${JSON.stringify(otherProps)};
+    props = convertFunctionProp(props);
+    assert.doesNotThrow(() => ReactDOM.renderToString(React.createElement(Component, props)));
+    assert.end();
+  });`);
+  });
 const test = (
 `'use strict';
 require('babel-register')({
@@ -67,6 +98,5 @@ test('is a valid React Component', assert => {
 
 ${asserts.join('\n\n')}
 `);
-
-console.log(test);
-fs.writeFile(path.join(__dirname, 'gen-test', 'index.js'), test);
+  return test;
+}

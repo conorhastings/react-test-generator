@@ -4,9 +4,8 @@
   "description": "generate tests for react components with propTypes and static analysis",
   "main": "index.js",
   "scripts": {
-    "test": "tape ./test/*.js",
-    "build": "./node_modules/.bin/webpack --progress",
-    "gen-test": "babel test --out-dir gen-test"
+    "test": "tape ./gen-test/*.js",
+    "build": "./node_modules/.bin/webpack --progress"
   },
   "keywords": [
     "tests",
@@ -37,6 +36,6 @@
     "webpack": "^1.12.13"
   },
   "dependencies": {
-    "babel-plugin-react-transform": "^2.0.0"
+    "commander": "^2.9.0"
   }
 }
