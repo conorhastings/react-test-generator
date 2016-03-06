@@ -27,9 +27,14 @@ fs.readdir(path.join(__dirname, program.in), (err, files) => {
             console.log(err.stack);
             process.exit(1);
           }
-          const parse = docGen.parse(data);
-          const test = createTest(parse, path.join(__dirname, program.in, file));
-          fs.writeFile(path.join(__dirname, program.out, file), test);
+          try {
+            const parse = docGen.parse(data);
+            const test = createTest(parse, path.join(__dirname, program.in, file));
+            fs.writeFile(path.join(__dirname, program.out, file), test);
+          }
+          catch (e) {
+            // do nothing
+          }
         });
       }
     });
