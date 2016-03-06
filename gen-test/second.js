@@ -26,15 +26,15 @@ test('is a valid React Component', assert => {
 });
 
 test('not required proptype something is actually not required', assert => {
-    let props = {"somethingElse":2};
-    props = convertFunctionProp(props);
-    assert.doesNotThrow(() => ReactDOM.renderToString(React.createElement(Component, props)));
-    assert.end();
-  });
+  let props = {"somethingElse":2};
+  props = convertFunctionProp(props);
+  assert.doesNotThrow(() => ReactDOM.renderToString(React.createElement(Component, props)));
+  assert.end();
+});
 
 test('not required proptype somethingElse is actually not required', assert => {
-    let props = {"something":"cool"};
-    props = convertFunctionProp(props);
-    assert.doesNotThrow(() => ReactDOM.renderToString(React.createElement(Component, props)));
-    assert.end();
-  });
+  let props = {"something":"cool"};
+  props = convertFunctionProp(props);
+  assert.doesNotThrow(() => ReactDOM.renderToString(React.createElement(Component, props)));
+  assert.end();
+});
