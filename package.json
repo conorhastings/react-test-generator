@@ -4,8 +4,7 @@
   "description": "generate tests for react components with propTypes and static analysis",
   "main": "index.js",
   "scripts": {
-    "test": "find ./test -name '*.js' -exec tape {} \\;",
-    "build": "./node_modules/.bin/webpack --progress"
+    "test": "find ./test -name '*.js' -exec tape {} \\;"
   },
   "bin": {
     "react-testgen": "index.js"

@@ -15,7 +15,9 @@ Installing globally is the most useful for now
 
 Once installed call this command in your terminal
 
-`react-testgen -i '/path/to/my/components -o '/tests'`
+`react-testgen -i '/path/to/my/components -o '/tests'` 
+
+and can call `react-testgen -h` for help. 
 
 This will generate test files for each located component following the same directory structure as the input path. This is a useful command for executing all the tests at once:
 

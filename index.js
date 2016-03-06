@@ -11,7 +11,7 @@ program
 .option('-o, --out <dir>', 'out directory')
 .parse(process.argv);
 
-readDirAndCreateTests(path.join(__dirname, program.in), path.join(__dirname, program.out));
+readDirAndCreateTests(path.join(process.cwd(), program.in), path.join(process.cwd(), program.out));
 
 function readDirAndCreateTests(inDir, outDir) {
   fs.readdir(inDir, (err, files) => {
