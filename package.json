@@ -4,7 +4,7 @@
   "description": "generate tests for react components with propTypes and static analysis",
   "main": "index.js",
   "scripts": {
-    "test": "tape ./gen-test/*.js",
+    "test": "find ./gen-test -name '*.js' -exec tape {} \\;",
     "build": "./node_modules/.bin/webpack --progress"
   },
   "keywords": [
