@@ -12,18 +12,26 @@ const basicPropTypes = {
   bool: true,
   object: {},
   array: [],
-  func: () => {}
+  func: '() => {}'
 };
-const notRequiredProps = Object.keys(parse.props).filter(prop => !prop.required);
+const componentProps = parse.props;
+const allProps = Object.keys(componentProps);
+const notRequiredProps = allProps.filter(prop => !prop.required);
 const asserts = notRequiredProps.map(prop => {
-  const otherProps = Object.keys(parse.props).reduce((props, oProp) => {
+  const otherProps = allProps.reduce((props, oProp) => {
     if (oProp !== prop) {
-      props[oProp] = basicPropTypes[parse.props[oProp].type.name];
+      props[oProp] = basicPropTypes[componentProps[oProp].type.name];
     }
     return props;
   }, {});
 return (`test('not required proptype ${prop} is actually not required', assert => {
-  assert.doesNotThrow(() => React.createElement(Component, ${JSON.stringify(otherProps)}))
+  const props = ${JSON.stringify(otherProps)};
+  Object.keys(props).forEach(prop => {
+    if (props[prop] === '() => {}') {
+      props[prop] = () => {};
+    }
+  });
+  assert.doesNotThrow(() => ReactDOM.renderToString(React.createElement(Component, props)));
   assert.end();
 });`);
 });
@@ -33,7 +41,9 @@ const test = (
 });
 const test = require('tape');
 const React = require('react');
-const Component = require('../test/index.js');
+const ReactDOM = require('react-dom/server');
+const Component = require('../test/index.js').default;
+
 
 ${asserts.join('\n\n')}
 `);
