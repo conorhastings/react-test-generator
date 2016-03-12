@@ -23,6 +23,11 @@ This will generate test files for each located component following the same dire
 
 `find ./gen-test -name '*.js' -exec tape {} \;'`
 
+## Commands
+* `-i, --in` - in directory
+* `-o, --out` out directory
+* `--no-overwrite` - do not overwrite current test files
+
 See <a href="https://github.com/conorhastings/react-test-generator/blob/master/package.json#L7">here</a> for usage example in a `package.json`. 
 
 Please file issues offering suggestions or documenting bugs, as this is, as mentioned above a huge WIP. 
