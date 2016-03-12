@@ -9,6 +9,7 @@ program
 .version('0.0.0')
 .option('-i, --in <dir>', 'in directory')
 .option('-o, --out <dir>', 'out directory')
+.option('--no-overwrite', 'don\'t overwrite current test file', false)
 .parse(process.argv);
 
 readDirAndCreateTests(path.join(process.cwd(), program.in), path.join(process.cwd(), program.out));
@@ -39,7 +40,11 @@ function readDirAndCreateTests(inDir, outDir) {
                   console.log(err.stack);
                   process.exit(1);
                 }
-                fs.writeFile(path.join(outDir, file), test);
+                fs.stat(path.join(outDir, file), (err, stat) => {
+                    if (err || !stat.isFile() || program.overwrite) {
+                      fs.writeFile(path.join(outDir, file), test);
+                    }
+                });
               });
             }
             catch (e) {
